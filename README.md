@@ -1,6 +1,6 @@
-# fis3-hook-commonJs
+# fis3-hook-commonjs
 
-fis3 已经默认不自带模块化开发支持，那么如果需要采用 commonJs 规范作为模块化开发，请使用此插件。
+fis3 已经默认不自带模块化开发支持，那么如果需要采用 commonjs 规范作为模块化开发，请使用此插件。
 
 请配合 [mod.js](https://github.com/fex-team/mod/blob/master/mod.js) 一起使用。
 
@@ -9,13 +9,13 @@ fis3 已经默认不自带模块化开发支持，那么如果需要采用 commo
 全局安装或者本地安装都可以。
 
 ```
-npm install -g fis3-hook-commonJs
+npm install -g fis3-hook-commonjs
 ```
 
 或者
 
 ```
-npm install fis3-hook-commonJs
+npm install fis3-hook-commonjs
 ```
 
 ## 用法
@@ -24,7 +24,7 @@ npm install fis3-hook-commonJs
 
 
 ```js
-fis.hook('commonJs', {
+fis.hook('commonjs', {
   // 配置项
 });
 ```
@@ -35,7 +35,7 @@ fis.hook('commonJs', {
 * `paths` 用来设置别名，路径基于 `baseUrl` 设置。
   
   ```js
-  fis.hook('commonJs', {
+  fis.hook('commonjs', {
     paths: {
       $: '/modules/jquery/jquery-1.11.2.js'
     }
@@ -44,7 +44,7 @@ fis.hook('commonJs', {
 * `packages` 用来配置包信息，方便项目中引用。
   
   ```js
-  fis.hook('commonJs', {
+  fis.hook('commonjs', {
     packages: [
       {
         name: 'foo',
