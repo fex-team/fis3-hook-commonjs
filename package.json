@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/fex-team/fis3-hook-commonJs.git"
+    "url": "https://github.com/fex-team/fis3-hook-commonjs.git"
   },
   "keywords": [
     "fis3",
@@ -18,7 +18,7 @@
   "author": "fis",
   "license": "BSD",
   "bugs": {
-    "url": "https://github.com/fex-team/fis3-hook-commonJs/issues"
+    "url": "https://github.com/fex-team/fis3-hook-commonjs/issues"
   },
-  "homepage": "https://github.com/fex-team/fis3-hook-commonJs"
+  "homepage": "https://github.com/fex-team/fis3-hook-commonjs"
 }
