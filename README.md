@@ -43,7 +43,7 @@ fis.hook('commonJs', {
   ```
 * `packages` 用来配置包信息，方便项目中引用。
   
-  ```
+  ```js
   fis.hook('commonJs', {
     packages: [
       {
