@@ -2,8 +2,7 @@
 
 fis3 已经默认不自带模块化开发支持，那么如果需要采用 commonJs 规范作为模块化开发，请使用此插件。
 
-请配合 mod.js 一起使用。
-
+请配合 [mod.js](https://github.com/fex-team/mod/blob/master/mod.js) 一起使用。
 
 ## 安装
 
