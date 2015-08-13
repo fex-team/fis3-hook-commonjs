@@ -4,6 +4,27 @@ fis3 已经默认不自带模块化开发支持，那么如果需要采用 commo
 
 请配合 [mod.js](https://github.com/fex-team/mod/blob/master/mod.js) 一起使用。
 
+注意：需要对目标文件设置 `isMod` 属性，说明这些文件是模块化代码。
+
+
+```js
+fis.match('/modules/**.js', {
+  isMod: true
+})
+``` 
+
+这样才会被自动包装成 `amd`，才能在浏览器里面运行（当然还得依靠 mod.js）。
+
+另外：如果发现某些 js 已经设置了 `isMod` 但是没有包装成 amd, 莫急，一定是那个 js 里面已经写了 `define` 语句了，这个插件认为他已经是模块化了的。
+但是如果坚持一定要包装成 amd 怎么办？加个 `wrap` 为 `true` 的属性就行了。
+
+```js
+fis.match('/xxxx.js', {
+  isMod: true,
+  wrap: true
+})
+```
+
 ## 安装
 
 全局安装或者本地安装都可以。
