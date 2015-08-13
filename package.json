@@ -1,0 +1,24 @@
+{
+  "name": "fis3-hook-commonJs",
+  "version": "0.0.1",
+  "description": "fis3 commonJs module",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/fex-team/fis3-hook-commonJs.git"
+  },
+  "keywords": [
+    "fis3",
+    "commonJs",
+    "module"
+  ],
+  "author": "fis",
+  "license": "BSD",
+  "bugs": {
+    "url": "https://github.com/fex-team/fis3-hook-commonJs/issues"
+  },
+  "homepage": "https://github.com/fex-team/fis3-hook-commonJs"
+}
