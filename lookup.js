@@ -9,10 +9,13 @@ function findPkgByFolder(folder, list) {
 
   if (list && list.length) {
     list.every(function(item) {
+      // console.log(item.folder, folder);
       if (item.folder === folder || path.resolve(baseUrl, item.folder) === folder) {
         ret = item;
         return false;
       }
+
+      return true;
     });
   }
 
