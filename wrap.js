@@ -1,16 +1,3 @@
-var rDefine = /('.*?'|".*?"|[^\\]\/\/[^\r\n\f]*|\/\*[\s\S]*?\*\/)|((?:^|[^\.])\bdefine\s*\()/ig;
-
-function hasDefine(content) {
-  var matched = false;
-
-  rDefine.lastIndex = 0; // reset RegExp
-  while(!matched && rDefine.test(content)) {
-    matched = !!RegExp.$2;
-  }
-
-  return matched;
-}
-
 module.exports = function(file, opts) {
   // 不是 js 文件不处理。
   if (!file.isJsLike || file.isPartial) {
@@ -18,9 +5,10 @@ module.exports = function(file, opts) {
   }
 
   var content = file.getContent();
-  var force = file.wrap === true || file.wrap === 'amd';
-
-  if (force || file.isMod && !hasDefine(content)) {
+  var forceNoWrap = file.wrap === false;
+  
+  if (!forceNoWrap && file.isMod) {
+    
     var deps = '';
     if (opts.forwardDeclaration) {
       var reqs = opts.skipBuiltinModules ? [] : ['\'require\'', '\'exports\'', '\'module\''];

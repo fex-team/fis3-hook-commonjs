@@ -15,16 +15,7 @@ fis.match('/modules/**.js', {
 
 这样才会被自动包装成 `amd`，才能在浏览器里面运行（当然还得依靠 mod.js）。
 
-另外：如果发现某些 js 已经设置了 `isMod` 但是依然没有包装成 amd, 莫急，一定是那个 js 里面已经写了 `define` 语句了，这个插件认为他已经是模块化了的。
-
-但是如果坚持一定要包装成 amd 怎么办？加个 `wrap` 为 `true` 的属性就行了。
-
-```js
-fis.match('/xxxx.js', {
-  isMod: true,
-  wrap: true
-})
-```
+另外，所有 `isMod` 为 `true` 的文件都会被包裹成 AMD, 如果不想包裹，请设置  `wrap` 属性为 `false`。
 
 ## 安装
 
