@@ -10,6 +10,7 @@ var _      = fis.util,
 var expect = require('chai').expect;
 var _release = fis.require('command-release/lib/release.js');
 var _deploy = fis.require('command-release/lib/deploy.js');
+var _self = require('../');
 
 function release(opts, cb) {
   opts = opts || {};
@@ -17,6 +18,26 @@ function release(opts, cb) {
   _release(opts, function(error, info) {
     _deploy(info, cb);
   });
+}
+
+function hookSelf(opts) {
+  var key = 'modules.hook';
+  var origin = fis.get(key);
+
+  if (origin) {
+    origin = typeof origin === 'string' ? origin.split(/\s*,\s*/) : (Array.isArray(origin) ? origin : [origin]);
+  } else {
+    origin = [];
+  }
+
+  origin.push(function(fis) {
+    var options = {};
+    _.assign(options, _self.defaultOptions);
+    _.assign(options, opts);
+    return _self.call(this, fis, options);
+  });
+
+  fis.set(key, origin);
 }
 
 describe('fis3-hook-commonjs ', function() {
@@ -33,7 +54,8 @@ describe('fis3-hook-commonjs ', function() {
       })
     });
     fis.media().set("namespaceConnector",":");
-    fis.hook('commonjs', {
+    
+    hookSelf({
       baseUrl: ".",
       forwardDeclaration: true,//依赖前置,
       skipBuiltinModules: false,
