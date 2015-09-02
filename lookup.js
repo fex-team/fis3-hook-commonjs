@@ -74,6 +74,11 @@ function tryBaseUrlLookUp(info, file, opts) {
   }
 }
 
+// 基于 BaseUrl 查找
+function tryRootLookUp(info, file, opts) {
+  return findResource(info.rest, root, opts.extList);
+}
+
 // 在 Paths 中查找
 function tryPathsLookUp(info, file, opts) {
   var id = info.rest;
@@ -97,14 +102,14 @@ function tryPathsLookUp(info, file, opts) {
 
 function tryFolderLookUp(info, file, opts) {
   var id = info.rest;
-  
+
   if (id === '.' || opts.packages) {
     // 真麻烦，还得去查找当前目录是不是 match 一个 packages。
     // 如果是，得找到 main 的设置。
     var folderName = id[0] === '/' ? path.join(baseUrl, id) : path.join(file.dirname, id);
-    
+
     var pkg = findPkgByFolder(folderName, opts.packages);
-    
+
     if (pkg) {
       return findResource(pkg.main || 'main', pkg.folder, opts.extList);
     }
@@ -114,7 +119,7 @@ function tryFolderLookUp(info, file, opts) {
 // 在 Pacakges 里面查找
 function tryPackagesLookUp(info, file, opts) {
   var id = info.rest;
-  
+
   if (/^([^\/]+)(?:\/(.*))?$/.test(id)) {
     var prefix = RegExp.$1;
     var subpath = RegExp.$2;
@@ -146,11 +151,12 @@ module.exports = function(info, file, silent) {
     tryPathsLookUp,
     tryPackagesLookUp,
     tryFolderLookUp,
-    tryBaseUrlLookUp
+    tryBaseUrlLookUp,
+    tryRootLookUp
   ].every(function(finder) {
-    
+
     var ret = finder(info, file, opts);
-    
+
     if (ret && ret.file) {
       info.id = ret.file.getId();
       info.file = ret.file;
