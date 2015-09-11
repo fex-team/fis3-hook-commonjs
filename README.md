@@ -17,6 +17,14 @@ fis.match('/modules/**.js', {
 
 另外，所有 `isMod` 为 `true` 的文件都会被包裹成 AMD, 如果不想包裹，请设置  `wrap` 属性为 `false`。
 
+设置了 `isMod` 为 true 的文件可以在 js 里面直接通过 `require('文件路径')` 的方式来使用，支持相对路径和绝对路径。
+
+```js
+var $ = require('/static/lib/jquery.js');
+
+require('./index.js');
+```
+
 ## 安装
 
 全局安装或者本地安装都可以。
