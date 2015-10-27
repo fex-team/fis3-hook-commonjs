@@ -15,13 +15,12 @@ module.exports = function(file, opts) {
 
       file.requires.forEach(function(id) {
         var dep = fis.uri(id, file.dirname);
-
         if (dep.file) {
           if (dep.file.isJsLike) {
             reqs.push('\'' + (dep.file.moduleId || dep.file.id) + '\'');
           }
         } else {
-          /(\..+)$/.test(id) ? (~opts.extList.indexOf(RegExp.$1) ? reqs.push('\'' + id.replace(/\.js$/i, '') + '\'') : '') : reqs.push('\'' + id + '\'');
+          /(\.\w+)$/.test(id) ? (~opts.extList.indexOf(RegExp.$1) ? reqs.push('\'' + id.replace(/\.js$/i, '') + '\'') : '') : reqs.push('\'' + id + '\'');
         }
       });
 
