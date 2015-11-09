@@ -146,11 +146,11 @@ module.exports = function(info, file, silent) {
   }
 
   [
-    tryNoExtLookUp,
     tryFisIdLookUp,
     tryPathsLookUp,
     tryPackagesLookUp,
     tryFolderLookUp,
+    tryNoExtLookUp,
     tryBaseUrlLookUp,
     tryRootLookUp
   ].every(function(finder) {
