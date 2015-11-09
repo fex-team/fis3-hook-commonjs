@@ -25,6 +25,19 @@ var $ = require('/static/lib/jquery.js');
 require('./index.js');
 ```
 
+## 自定义模块ID
+
+插件默认使用资源的绝对路径作为模块ID，如果希望更改模块ID，需要对目标文件设置 `moduleId` 属性
+
+```js
+fis.match('/modules/(**).js', {
+  isMod: true,
+  moduleId: '$1'
+})
+``` 
+
+通过上述配置，我们可以将 `/modules/A.js` 的模块ID由 `modules/A` 改变为 `A`
+
 ## 安装
 
 全局安装或者本地安装都可以。
