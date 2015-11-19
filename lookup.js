@@ -9,7 +9,6 @@ function findPkgByFolder(folder, list) {
 
   if (list && list.length) {
     list.every(function(item) {
-      // console.log(item.folder, folder);
       if (item.folder === folder || path.resolve(baseUrl, item.folder) === folder) {
         ret = item;
         return false;
@@ -145,6 +144,8 @@ module.exports = function(info, file, silent) {
     throw new Error('Please make sure init is called before this.');
   }
 
+  var originPath = info.rest;
+  
   [
     tryFisIdLookUp,
     tryPathsLookUp,
@@ -152,14 +153,54 @@ module.exports = function(info, file, silent) {
     tryFolderLookUp,
     tryNoExtLookUp,
     tryBaseUrlLookUp,
-    tryRootLookUp
+    tryRootLookUp,
+
+    function(info) {
+      info.rest = path.join(originPath, 'index');
+      return info;
+    },
+
+    tryPathsLookUp,
+    tryPackagesLookUp,
+    tryFolderLookUp,
+    tryNoExtLookUp,
+    tryBaseUrlLookUp,
+    tryRootLookUp,
+
+    function(info) {
+      var basename = path.basename(originPath);
+      if (!basename) {
+        return false;
+      }
+
+      info.rest = path.join(originPath, basename);
+      return info;
+    },
+
+    tryPathsLookUp,
+    tryPackagesLookUp,
+    tryFolderLookUp,
+    tryNoExtLookUp,
+    tryBaseUrlLookUp,
+    tryRootLookUp,
+
+    function(info) {
+      info.rest = originPath;
+      return info;
+    }
   ].every(function(finder) {
+
+    if (info.file) {
+      return false;
+    }
 
     var ret = finder(info, file, opts);
 
     if (ret && ret.file) {
       info.id = ret.file.getId();
       info.file = ret.file;
+      return false;
+    } else if (ret === false) {
       return false;
     }
 

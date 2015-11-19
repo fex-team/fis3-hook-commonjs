@@ -12,6 +12,20 @@ var entry = module.exports = function(fis, opts) {
   fis.on('compile:postprocessor', function(file) {
     wrapJs(file, opts);
   });
+  fis.on('components:info', function(componentsInfo) {
+    var componentsDir = (fis.env().get('component.dir') || 'components/').replace(/\/$/, '');
+    var path = require('path');
+    Object.keys(componentsInfo).forEach(function(key) {
+      var json = componentsInfo[key];
+      opts.packages = opts.packages || [];
+      opts.packages.unshift({
+        name: json.name,
+        main: json.main || 'index',
+        location: path.join(componentsDir, json.name)
+      });
+    });
+    lookup.init(fis, opts);
+  });
 };
 
 entry.defaultOptions = {
