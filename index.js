@@ -13,8 +13,8 @@ var entry = module.exports = function(fis, opts) {
     wrapJs(file, opts);
   });
   fis.on('components:info', function(componentsInfo) {
-    var componentsDir = (fis.env().get('component.dir') || 'components/').replace(/\/$/, '');
     var path = require('path');
+    var componentsDir = path.relative(opts.baseUrl || '.', (fis.env().get('component.dir') || 'components/').replace(/\/$/, ''));
     Object.keys(componentsInfo).forEach(function(key) {
       var json = componentsInfo[key];
       opts.packages = opts.packages || [];
@@ -27,7 +27,7 @@ var entry = module.exports = function(fis, opts) {
       if (json.paths) {
         opts.paths = opts.paths || {};
         Object.keys(json.paths).forEach(function(key) {
-          opts.paths[path.join(json.name, key)] = paths.join(componentsDir, json.paths[key]);
+          opts.paths[path.join(json.name, key)] = path.join(componentsDir, json.name, json.paths[key]);
         });
       }
     });
