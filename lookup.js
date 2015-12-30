@@ -84,15 +84,21 @@ function tryPathsLookUp(info, file, opts) {
   var test;
 
   if (/^([^\/]+)(?:\/(.*))?$/.test(id)) {
-    var prefix = RegExp.$1;
-    var subpath = RegExp.$2;
-    var dirs;
+    var parts = id.split('/');
+    var idx = parts.length;
 
-    if ((dirs = paths[prefix])) {
-      for (var i = 0, len = dirs.length;
-        (!test || !test.file) && i < len; i++) {
-        test = subpath ? findResource(subpath, path.join(baseUrl, dirs[i]), opts.extList) : findResource(dirs[i], baseUrl, opts.extList);
+    while (idx > 0) {
+      var prefix = parts.slice(0, idx).join('/');
+      var subpath = parts.slice(idx).join('/');
+
+      var dirs;
+      if ((dirs = paths[prefix])) {
+        for (var i = 0, len = dirs.length;
+          (!test || !test.file) && i < len; i++) {
+          test = subpath ? findResource(subpath, path.join(baseUrl, dirs[i]), opts.extList) : findResource(dirs[i], baseUrl, opts.extList);
+        }
       }
+      idx--;
     }
   }
 

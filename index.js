@@ -27,7 +27,7 @@ var entry = module.exports = function(fis, opts) {
       if (json.paths) {
         opts.paths = opts.paths || {};
         Object.keys(json.paths).forEach(function(key) {
-          opts.paths[path.join(componentsDir, key)] = paths.join(componentsDir, json.paths[key]);
+          opts.paths[path.join(json.name, key)] = paths.join(componentsDir, json.paths[key]);
         });
       }
     });
