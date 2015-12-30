@@ -101,3 +101,13 @@ fis.hook('commonjs', {
 * `skipBuiltinModules` 默认为 `true`, 只有在 `forwardDeclaration` 启动的时候才有效，用来设置前置依赖列表中是否跳过内置模块如： `require`, `module`, `exports`。
 * `extList` 默认为 `['.js', '.coffee', '.jsx', '.es6']`，当引用模块时没有指定后缀，该插件会尝试这些后缀。
 * `tab` 默认为 `2`, 用来设置包裹时，内容缩进的空格数。
+* `ignoreDependencies` 默认为 空，用来忽略掉对某些资源 `require`，一般用来忽略掉内部实现的 `require` 资源。
+  
+  ```js
+  fis.hook('commonjs', {
+    // 忽略 angular2 的依赖。我自己负责加载需要资源。
+    ignoreDependencies: [
+      'angular2/**',
+    ]
+  });
+  ```
