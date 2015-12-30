@@ -23,6 +23,13 @@ var entry = module.exports = function(fis, opts) {
         main: json.main || 'index',
         location: path.join(componentsDir, json.name)
       });
+
+      if (json.paths) {
+        opts.paths = opts.paths || {};
+        Object.keys(json.paths).forEach(function(key) {
+          opts.paths[path.join(componentsDir, key)] = paths.join(componentsDir, json.paths[key]);
+        });
+      }
     });
     lookup.init(fis, opts);
   });
