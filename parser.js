@@ -1,9 +1,9 @@
 var lang = fis.compile.lang;
 var rRequire = /"(?:[^\\"\r\n\f]|\\[\s\S])*"|'(?:[^\\'\n\r\f]|\\[\s\S])*'|(\/\/[^\r\n\f]+|\/\*[\s\S]+?(?:\*\/|$))|\b(require\.async|require)\s*\(\s*("(?:[^\\"\r\n\f]|\\[\s\S])*"|'(?:[^\\'\n\r\f]|\\[\s\S])*'|\[[\s\S]*?\])\s*/g;
-var path = require('path')
 
 module.exports = function(info) {
   var content = info.content;
+  var file = info.file;
 
   info.content = content.replace(rRequire, function(m, comment, type, params) {
     if (type) {
