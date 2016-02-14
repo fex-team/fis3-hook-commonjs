@@ -29,6 +29,7 @@
     "mocha-junit-reporter": "^1.4.0"
   },
   "dependencies": {
+    "resolve": "^1.1.7",
     "source-map": "^0.5.3"
   }
 }
