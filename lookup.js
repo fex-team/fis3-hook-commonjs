@@ -151,7 +151,7 @@ module.exports = function(info, file, silent) {
   }
 
   var originPath = info.rest;
-  
+
   [
     tryFisIdLookUp,
     tryPathsLookUp,
@@ -233,20 +233,29 @@ module.exports.init = function(fis, conf) {
 
   // normalize packages.
   // 规整，方便后续查找
-  opts.packages = opts.packages && opts.packages.map(function(item) {
-    if (typeof item === 'string') {
-      item = {
-        name: item
-      };
-    }
+  function normalizePackage(parent) {
+    parent.packages = parent.packages && parent.packages.map(function (item) {
+      if (typeof item === 'string') {
+        item = {
+          name: item
+        };
+      }
 
-    var folder = item.location || item.name;
+      var folder = item.location || item.name;
 
-    item.isFISID = isFISID(folder);
-    item.folder = item.isFISID ? folder : path.join(baseUrl, item.location || item.name);
-    pkgs[item.name] = item;
-    return item;
-  });
+      item.isFISID = isFISID(folder);
+      item.folder = item.isFISID ? folder : path.join(baseUrl, item.location || item.name);
+      pkgs[item.name] = item;
+
+      if (item.packages) {
+        normalizePackage(item)
+      }
+
+      return item;
+    });
+  }
+
+    normalizePackage(opts)
 
   // normalize paths.
   // 规整，方便后续查找
