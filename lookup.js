@@ -146,19 +146,12 @@ function tryPackagesLookUp(info, file, opts) {
     }
 }
 
-
-// ---------------------
-// node_modules 模式
-// ---------------------
-
 module.exports = function (info, file, silent) {
     if (!inited) {
         throw new Error('Please make sure init is called before this.');
     }
 
     var originPath = info.rest;
-    var tasks = [];
-
 
     [tryFisIdLookUp,
         tryPathsLookUp,

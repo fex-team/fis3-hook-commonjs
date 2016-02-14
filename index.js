@@ -35,8 +35,6 @@ var entry = module.exports = function (fis, opts) {
         lookup.init(fis, opts);
     });
     fis.on('node_modules:info', function (packages) {
-        var path = require('path')
-
         opts.packages = packages.packages
 
         lookup.init(fis, opts)
