@@ -28,12 +28,27 @@ function isFISID(filepath) {
 }
 
 // 当 require 没有指定后缀时，用来根据后缀查找模块定义。
-function findResource(name, path, extList) {
-  var info = fis.uri(name, path);
-
-  for (var i = 0, len = extList.length; i < len && !info.file; i++) {
-    info = fis.uri(name + extList[i], path);
+function findResource(name, filepath, extList) {
+  var candidates = [name, path.join(name, 'index')];
+  var baseName = path.basename(name);
+  if (baseName && baseName !== '.' && baseName !== '..') {
+    candidates.push(path.join(name, baseName));
   }
+  var info = null;
+
+  candidates.every(function(candidate) {
+    info = fis.uri(candidate, filepath);
+
+    for (var i = 0, len = extList.length; i < len && !info.file; i++) {
+      info = fis.uri(candidate + extList[i], filepath);
+    }
+
+    if (info && info.file) {
+      return false;
+    }
+
+    return true;
+  });
 
   return info;
 }
@@ -73,7 +88,7 @@ function tryBaseUrlLookUp(info, file, opts) {
   }
 }
 
-// 基于 BaseUrl 查找
+// 基于 Root 查找
 function tryRootLookUp(info, file, opts) {
   return findResource(info.rest, root, opts.extList);
 }
@@ -159,41 +174,7 @@ module.exports = function(info, file, silent) {
     tryFolderLookUp,
     tryNoExtLookUp,
     tryBaseUrlLookUp,
-    tryRootLookUp,
-
-    function(info) {
-      info.rest = path.join(originPath, 'index');
-      return info;
-    },
-
-    tryPathsLookUp,
-    tryPackagesLookUp,
-    tryFolderLookUp,
-    tryNoExtLookUp,
-    tryBaseUrlLookUp,
-    tryRootLookUp,
-
-    function(info) {
-      var basename = path.basename(originPath);
-      if (!basename) {
-        return false;
-      }
-
-      info.rest = path.join(originPath, basename);
-      return info;
-    },
-
-    tryPathsLookUp,
-    tryPackagesLookUp,
-    tryFolderLookUp,
-    tryNoExtLookUp,
-    tryBaseUrlLookUp,
-    tryRootLookUp,
-
-    function(info) {
-      info.rest = originPath;
-      return info;
-    }
+    tryRootLookUp
   ].every(function(finder) {
 
     if (info.file) {
