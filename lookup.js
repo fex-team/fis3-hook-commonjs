@@ -148,7 +148,7 @@ function tryPackagesLookUp(info, file, opts) {
     if (pkg) {
       if (pkg.isFISID) {
         info.isFISID = true;
-        info.id = path.join(pkg.folder, subpath || pkg.main || 'main');
+        info.id = path.join(pkg.folder, subpath || pkg.main || 'main').replace(/\\/g, '/');
         if (!/\.[^\.]+$/.test(info.id)) {
           info.id += '.js';
         }
