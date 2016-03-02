@@ -160,23 +160,15 @@ function tryPackagesLookUp(info, file, opts) {
   }
 }
 
-module.exports = function(info, file, silent) {
+var lookup = module.exports = function(info, file, silent) {
   if (!inited) {
     throw new Error('Please make sure init is called before this.');
   }
 
   var originPath = info.rest;
+  var lookupList = lookup.lookupList || [];
 
-  [
-    tryFisIdLookUp,
-    tryPathsLookUp,
-    tryPackagesLookUp,
-    tryFolderLookUp,
-    tryNoExtLookUp,
-    tryBaseUrlLookUp,
-    tryRootLookUp
-  ].every(function(finder) {
-
+  lookupList.every(function(finder) {
     if (info.file) {
       return false;
     }
@@ -201,10 +193,30 @@ module.exports = function(info, file, silent) {
   return info;
 }
 
+lookup.lookupList = [
+  tryFisIdLookUp,
+  tryPathsLookUp,
+  tryPackagesLookUp,
+  tryFolderLookUp,
+  tryNoExtLookUp,
+  tryBaseUrlLookUp,
+  tryRootLookUp
+];
+
+lookup.tryFisIdLookUp = tryFisIdLookUp;
+lookup.tryPathsLookUp = tryPathsLookUp;
+lookup.tryPackagesLookUp = tryPackagesLookUp;
+lookup.tryFolderLookUp = tryFolderLookUp;
+lookup.tryNoExtLookUp = tryNoExtLookUp;
+lookup.tryBaseUrlLookUp = tryBaseUrlLookUp;
+lookup.tryRootLookUp = tryRootLookUp;
+
+lookup.findResource = findResource;
+
 /**
  * 初始化 lookup
  */
-module.exports.init = function(fis, conf) {
+lookup.init = function(fis, conf) {
   inited = true;
   opts = conf;
   root = fis.project.getProjectPath();
