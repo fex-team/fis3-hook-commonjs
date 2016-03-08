@@ -189,6 +189,15 @@ var lookup = module.exports = function(info, file, silent) {
   // if (!silent && (!info.file || !info.moduleId)) {
   //   fis.log.warn('Can\'t find resource %s', info.rest.red);
   // }
+  //
+
+
+  // 跨模块引用 js
+  if (info.isFISID && !info.file && (/\.js$/.test(info.rest) || !/\.\w+$/.test(info.rest))) {
+    info.id = info.rest;
+    info.moduleId = info.id.replace(/\.js$/, '');
+    info.id = info.moduleId + '.js';
+  }
 
   return info;
 }
