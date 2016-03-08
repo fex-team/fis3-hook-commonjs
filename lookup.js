@@ -1,6 +1,18 @@
 var path = require('path');
 var inited = false;
 var root, baseUrl, pkgs, paths, opts;
+var moitJsExtension;
+
+function getJsExtensionMoited() {
+  if (typeof moitJsExtension === 'undefined') {
+    var testFile = fis.file(fis.project.getProjectPath() + '/test.js');
+    // console.log(testFile);
+
+    moitJsExtension = testFile.id !== testFile.moduleId;
+  }
+
+  return moitJsExtension;
+}
 
 // find package base on folder name
 // 根据目录位置查找是否属于某个 package 配置
@@ -195,8 +207,13 @@ var lookup = module.exports = function(info, file, silent) {
   // 跨模块引用 js
   if (info.isFISID && !info.file && (/\.js$/.test(info.rest) || !/\.\w+$/.test(info.rest))) {
     info.id = info.rest;
-    info.moduleId = info.id.replace(/\.js$/, '');
-    info.id = info.moduleId + '.js';
+    var mod = getJsExtensionMoited();
+
+    // 只有在省略后缀的模式下才启用。
+    if (mod) {
+      info.moduleId = info.id.replace(/\.js$/, '');
+      info.id = info.moduleId + '.js';
+    }
   }
 
   return info;
