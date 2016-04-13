@@ -11,7 +11,7 @@ fis3 已经默认不自带模块化开发支持，那么如果需要采用 commo
 fis.match('/modules/**.js', {
   isMod: true
 })
-``` 
+```
 
 这样才会被自动包装成 `amd`，才能在浏览器里面运行（当然还得依靠 mod.js）。
 
@@ -25,6 +25,14 @@ var $ = require('/static/lib/jquery.js');
 require('./index.js');
 ```
 
+如果存在部分模块化文件不是以 commonjs 规范编写的，该插件可以通过配置文件属性 `umd2commonjs` 尝试兼容。
+
+```
+fis.match('/node_modules/echarts/**.js', {
+  umd2commonjs: true
+})
+```
+
 ## 自定义模块ID
 
 插件默认使用资源的绝对路径作为模块ID，如果希望更改模块ID，需要对目标文件设置 `moduleId` 属性
@@ -34,7 +42,7 @@ fis.match('/modules/(**).js', {
   isMod: true,
   moduleId: '$1'
 })
-``` 
+```
 
 通过上述配置，我们可以将 `/modules/A.js` 的模块ID由 `modules/A` 改变为 `A`
 
@@ -73,7 +81,7 @@ fis.hook('commonjs', {
 
 * `baseUrl` 默认为 `.` 即项目根目录。用来配置模块查找根目录。
 * `paths` 用来设置别名，路径基于 `baseUrl` 设置。
-  
+
   ```js
   fis.hook('commonjs', {
     paths: {
@@ -82,7 +90,7 @@ fis.hook('commonjs', {
   });
   ```
 * `packages` 用来配置包信息，方便项目中引用。
-  
+
   ```js
   fis.hook('commonjs', {
     packages: [
@@ -102,7 +110,7 @@ fis.hook('commonjs', {
 * `extList` 默认为 `['.js', '.coffee', '.jsx', '.es6']`，当引用模块时没有指定后缀，该插件会尝试这些后缀。
 * `tab` 默认为 `2`, 用来设置包裹时，内容缩进的空格数。
 * `ignoreDependencies` 默认为 空，用来忽略掉对某些资源 `require`，一般用来忽略掉内部实现的 `require` 资源。
-  
+
   ```js
   fis.hook('commonjs', {
     // 忽略 angular2 的依赖。我自己负责加载需要资源。

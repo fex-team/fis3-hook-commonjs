@@ -1,9 +1,15 @@
 var lang = fis.compile.lang;
 var rRequire = /"(?:[^\\"\r\n\f]|\\[\s\S])*"|'(?:[^\\'\n\r\f]|\\[\s\S])*'|(\/\/[^\r\n\f]+|\/\*[\s\S]+?(?:\*\/|$))|\b(require\.async|require)\s*\(\s*("(?:[^\\"\r\n\f]|\\[\s\S])*"|'(?:[^\\'\n\r\f]|\\[\s\S])*'|\[[\s\S]*?\])\s*/g;
+var umd2commonjs = require('./umd2commonjs.js')
 
 module.exports = function(info) {
   var content = info.content;
   var file = info.file;
+
+  // 如果标记了需要将 amd 转成 commonjs 规范
+  if (file.umd2commonjs) {
+    content = umd2commonjs(content, file);
+  }
 
   info.content = content.replace(rRequire, function(m, comment, type, params) {
     if (type) {

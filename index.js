@@ -2,6 +2,7 @@ var path = require('path');
 var lookup = require('./lookup.js');
 var wrapJs = require('./wrap.js');
 var parseJs = require('./parser.js');
+var umd2commonjs = require('./umd2commonjs.js')
 
 // 程序入口
 var entry = module.exports = function(fis, opts) {

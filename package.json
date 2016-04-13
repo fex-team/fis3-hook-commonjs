@@ -1,6 +1,6 @@
 {
   "name": "fis3-hook-commonjs",
-  "version": "0.1.14",
+  "version": "0.1.15",
   "description": "fis3 commonJs module",
   "main": "index.js",
   "scripts": {
@@ -29,6 +29,9 @@
     "mocha-junit-reporter": "^1.4.0"
   },
   "dependencies": {
-    "source-map": "^0.5.3"
+    "source-map": "^0.5.3",
+    "escope": "^3.3.0",
+    "esprima": "^2.7.1",
+    "jstransform": "^11.0.3"
   }
 }
