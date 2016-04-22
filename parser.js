@@ -1,5 +1,5 @@
 var lang = fis.compile.lang;
-var rRequire = /"(?:[^\\"\r\n\f]|\\[\s\S])*"|'(?:[^\\'\n\r\f]|\\[\s\S])*'|(\/\/[^\r\n\f]+|\/\*[\s\S]+?(?:\*\/|$))|\b(require\.async|require)\s*\(\s*("(?:[^\\"\r\n\f]|\\[\s\S])*"|'(?:[^\\'\n\r\f]|\\[\s\S])*'|\[[\s\S]*?\])\s*/g;
+var rRequire = /"(?:[^\\"\r\n\f]|\\[\s\S])*"|'(?:[^\\'\n\r\f]|\\[\s\S])*'|(\/\/[^\r\n\f]+|\/\*[\s\S]+?(?:\*\/|$))|\b(require\.async|require\.ensure|require)\s*\(\s*("(?:[^\\"\r\n\f]|\\[\s\S])*"|'(?:[^\\'\n\r\f]|\\[\s\S])*'|\[[\s\S]*?\])\s*/g;
 var umd2commonjs = require('./umd2commonjs.js')
 
 module.exports = function(info) {
@@ -18,6 +18,15 @@ module.exports = function(info) {
           var info = parseParams(params);
 
           m = 'require.async([' + info.params.map(function(v) {
+            var type = lang.jsAsync;
+            return type.ld + v + type.rd;
+          }).join(',') + ']';
+          break;
+
+        case 'require.ensure':
+          var info = parseParams(params);
+
+          m = 'require.ensure([' + info.params.map(function(v) {
             var type = lang.jsAsync;
             return type.ld + v + type.rd;
           }).join(',') + ']';
