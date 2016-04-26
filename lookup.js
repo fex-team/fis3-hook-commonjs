@@ -206,7 +206,7 @@ var lookup = module.exports = function(info, file, silent) {
 
   // 跨模块引用 js
   if (info.isFISID && !info.file && (/\.js$/.test(info.rest) || !/\.\w+$/.test(info.rest))) {
-    info.id = info.rest;
+    info.id = info.id || info.rest;
     var mod = getJsExtensionMoited();
 
     // 只有在省略后缀的模式下才启用。
