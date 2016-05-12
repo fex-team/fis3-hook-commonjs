@@ -210,7 +210,7 @@ var lookup = module.exports = function(info, file, silent) {
     var mod = getJsExtensionMoited();
 
     // 只有在省略后缀的模式下才启用。
-    if (mod) {
+    if (mod && !/^http/.test(info.id)) {
       info.moduleId = info.id.replace(/\.js$/, '');
       info.id = info.moduleId + '.js';
     }
