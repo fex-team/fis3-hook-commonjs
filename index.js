@@ -9,7 +9,9 @@ var entry = module.exports = function(fis, opts) {
   lookup.init(fis, opts);
 
   fis.on('lookup:file', lookup);
-  fis.on('standard:js', parseJs);
+  fis.on('standard:js', function(info) {
+    parseJs(info, opts);
+  });
   fis.on('compile:postprocessor', function(file) {
     wrapJs(file, opts);
   });
@@ -40,7 +42,20 @@ var entry = module.exports = function(fis, opts) {
       opts.packages = packages.packages
 
       lookup.init(fis, opts)
-  })
+  });
+
+  var ignoreDependencies = opts.ignoreDependencies || [];
+  if (typeof ignoreDependencies === 'string') {
+    ignoreDependencies = ignoreDependencies.split(/\s*,\s*/);
+  } else if (!Array.isArray(ignoreDependencies)) {
+    ignoreDependencies = [ignoreDependencies];
+  }
+  opts.ignoreDependencies = ignoreDependencies.map(function(item) {
+    return typeof item === 'string' ? fis.util.glob(item, null, {
+      matchBase: true,
+      nocase: true
+    }) : item;
+  });
 };
 
 entry.defaultOptions = {
