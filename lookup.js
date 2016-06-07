@@ -138,7 +138,7 @@ function tryFolderLookUp(info, file, opts) {
   if (id === '.' || opts.packages) {
     // 真麻烦，还得去查找当前目录是不是 match 一个 packages。
     // 如果是，得找到 main 的设置。
-    var folderName = id[0] === '/' ? path.join(baseUrl, id) : path.join(file.dirname, id);
+    var folderName = id[0] === '/' ? path.join(baseUrl, id) : path.join(file ? file.dirname : baseUrl, id);
 
     var pkg = findPkgByFolder(folderName, opts.packages);
 
