@@ -33,6 +33,14 @@ fis.match('/node_modules/echarts/**.js', {
 })
 ```
 
+同时某些 js 内部有很多 require 的用法，如果希望 fis 忽略这部分依赖，可以设置 `ignoreDependencies` 如:
+
+```
+fis.match('/node_modules/echarts/**.js', {
+  ignoreDependencies: true
+})
+```
+
 ## 自定义模块ID
 
 插件默认使用资源的绝对路径作为模块ID，如果希望更改模块ID，需要对目标文件设置 `moduleId` 属性

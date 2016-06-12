@@ -34,6 +34,11 @@ module.exports = function(info, opts) {
     content = umd2commonjs(content, file);
   }
 
+  // 文件属性上设置了，则直接跳过依赖分析部分。
+  if (file.ignoreDependencies) {
+    return;
+  }
+
   info.content = content.replace(rRequire, function(m, comment, type, params) {
     if (type) {
       switch (type) {
