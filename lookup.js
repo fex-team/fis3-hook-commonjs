@@ -95,13 +95,17 @@ function tryFisIdLookUp(info, file, opts) {
 
 // 基于 BaseUrl 查找
 function tryBaseUrlLookUp(info, file, opts) {
-  if (root !== baseUrl) {
+  if (root !== baseUrl && info.rest && info.rest[0] !== ".") {
     return findResource(info.rest, baseUrl, opts.extList);
   }
 }
 
 // 基于 Root 查找
 function tryRootLookUp(info, file, opts) {
+  if (info.rest && info.rest[0] === '.') {
+    return;
+  }
+
   return findResource(info.rest, root, opts.extList);
 }
 
