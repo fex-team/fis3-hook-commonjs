@@ -99,7 +99,7 @@ function tryBaseUrlLookUp(info, file, opts) {
     var ret = findResource(info.rest, baseUrl, opts.extList);
 
     if (ret && ret.file && info.rest[0] === '.') {
-      fis.log.warn('%s `%s` in [`%s`] resolved to `%s`. And relative path will not be resolved to `BaseUrl` later.', '[Deprecated]'.red, info.rest, file.subpath, ret.file.subpath);
+      fis.log.warn('Should use `%s` instead of `%s` in [`%s`] since `BaseUrl` should not be used in relative path resolving.', ret.file.subpath, info.rest, file.subpath);
     }
 
     return ret;
