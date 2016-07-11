@@ -95,7 +95,7 @@ function tryFisIdLookUp(info, file, opts) {
 
 // 基于 BaseUrl 查找
 function tryBaseUrlLookUp(info, file, opts) {
-  if (root !== baseUrl && info.rest && info.rest[0] !== ".") {
+  if (root !== baseUrl && info.rest) {
     return findResource(info.rest, baseUrl, opts.extList);
   }
 }

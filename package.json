@@ -1,6 +1,6 @@
 {
   "name": "fis3-hook-commonjs",
-  "version": "0.1.23",
+  "version": "0.1.24",
   "description": "fis3 commonJs module",
   "main": "index.js",
   "scripts": {
