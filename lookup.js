@@ -96,7 +96,13 @@ function tryFisIdLookUp(info, file, opts) {
 // 基于 BaseUrl 查找
 function tryBaseUrlLookUp(info, file, opts) {
   if (root !== baseUrl && info.rest) {
-    return findResource(info.rest, baseUrl, opts.extList);
+    var ret = findResource(info.rest, baseUrl, opts.extList);
+
+    if (ret && ret.file && info.rest[0] === '.') {
+      fis.log.warn('%s `%s` in [`%s`] resolved to `%s`. And relative path will not be resolved to `BaseUrl` later.', '[Deprecated]'.red, info.rest, file.subpath, ret.file.subpath);
+    }
+
+    return ret;
   }
 }
 
