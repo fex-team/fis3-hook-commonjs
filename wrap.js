@@ -49,25 +49,29 @@ module.exports = function(file, opts) {
     }
 
     if (derived && derived[0] && derived[0].rExt === '.map') {
-      var SourceMap = require('source-map');
+      try {
+        var SourceMap = require('source-map');
       
 
-      var sourcemap = derived[0];
-      var json = JSON.parse(sourcemap.getContent());
-      var smc = new SourceMap.SourceMapConsumer(json);
+        var sourcemap = derived[0];
+        var json = JSON.parse(sourcemap.getContent());
+        var smc = new SourceMap.SourceMapConsumer(json);
 
-      var sourceNode = new SourceMap.SourceNode();
+        var sourceNode = new SourceMap.SourceNode();
 
-      sourceNode.add(prefix);
-      sourceNode.add(SourceMap.SourceNode.fromStringWithSourceMap(originContent, smc));
-      sourceNode.add(affix);
+        sourceNode.add(prefix);
+        sourceNode.add(SourceMap.SourceNode.fromStringWithSourceMap(originContent, smc));
+        sourceNode.add(affix);
 
-      var code_map = sourceNode.toStringWithSourceMap({
-        file: smc.file
-      });
+        var code_map = sourceNode.toStringWithSourceMap({
+          file: smc.file
+        });
 
-      var generater = SourceMap.SourceMapGenerator.fromSourceMap(new SourceMap.SourceMapConsumer(code_map.map.toJSON()));
-      sourcemap.setContent(generater.toString());
+        var generater = SourceMap.SourceMapGenerator.fromSourceMap(new SourceMap.SourceMapConsumer(code_map.map.toJSON()));
+        sourcemap.setContent(generater.toString());
+      } catch (e) {
+        fis.log.warn('SourceMap Merge Error: %s\n%s', e.message, e.stack);
+      }
     }
 
     file.setContent(content);
