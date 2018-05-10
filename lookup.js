@@ -165,6 +165,14 @@ function tryPackagesLookUp(info, file, opts) {
   if (/^([^\/]+)(?:\/(.*))?$/.test(id)) {
     var prefix = RegExp.$1;
     var subpath = RegExp.$2;
+
+    // 如果是 scoped package
+    if (prefix && prefix[0] === '@') {
+      var arr = subpath.split('/');
+      prefix += '/' + arr.shift();
+      subpath = arr.join('/');
+    }
+    
     var pkg = pkgs[prefix];
 
     if (pkg) {
