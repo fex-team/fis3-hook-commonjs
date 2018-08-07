@@ -44,7 +44,7 @@ module.exports = function(file, opts) {
     }
 
     // 同时修改 sourcemap 文件内容。
-    const derived = file.derived;
+    let derived = file.derived;
     if (!derived || !derived.length) {
       derived = file.extras && file.extras.derived;
     }
