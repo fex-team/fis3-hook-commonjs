@@ -68,14 +68,16 @@ module.exports = function(file, opts) {
           new SourceMap.SourceMapConsumer(code_map.map.toJSON()).then(smp => {
             const generater = SourceMap.SourceMapGenerator.fromSourceMap(smp);
             sourcemap.setContent(generater.toString());
-            // file.setContent(content);
+            file.setContent(content);
           });
         }));
       } catch (e) {
         fis.log.warn('SourceMap Merge Error: %s\n%s', e.message, e.stack);
+        file.setContent(content);
       }
+    } else {
+      file.setContent(content);
     }
 
-    file.setContent(content);
   }
 }
