@@ -1,21 +1,20 @@
-const SourceMap = require('source-map');
-
 module.exports = function(file, opts) {
   // 不是 js 文件不处理。
   if (!file.isJsLike || file.isPartial) {
     return;
   }
 
-  let content = file.getContent();
-  const forceNoWrap = file.wrap === false;
-
+  var content = file.getContent();
+  var forceNoWrap = file.wrap === false;
+  
   if (!forceNoWrap && file.isMod) {
-    let deps = '';
+    
+    var deps = '';
     if (opts.forwardDeclaration) {
-      const reqs = opts.skipBuiltinModules ? [] : ['\'require\'', '\'exports\'', '\'module\''];
+      var reqs = opts.skipBuiltinModules ? [] : ['\'require\'', '\'exports\'', '\'module\''];
 
       file.requires.forEach(function(id) {
-        const dep = fis.uri(id, file.dirname);
+        var dep = fis.uri(id, file.dirname);
         if (dep.file) {
           if (dep.file.isJsLike) {
             reqs.push('\'' + (dep.file.moduleId || dep.file.id) + '\'');
@@ -28,14 +27,14 @@ module.exports = function(file, opts) {
       deps = ' [' + reqs.join(', ') + '],';
     }
 
-    const originContent = content;
+    var originContent = content;
 
     if (opts.tab) {
       content = fis.util.pad(' ', opts.tab) + content.split(/\n|\r\n|\r/g).join('\n' + fis.util.pad(' ', opts.tab));
     }
 
-    const prefix = 'define(\'' + (file.moduleId || file.id) + '\',' + deps + ' function(require, exports, module) {\n\n';
-    const affix = '\n\n});\n';
+    var prefix = 'define(\'' + (file.moduleId || file.id) + '\',' + deps + ' function(require, exports, module) {\n\n';
+    var affix = '\n\n});\n';
 
     content = prefix + content + affix;
 
@@ -44,40 +43,37 @@ module.exports = function(file, opts) {
     }
 
     // 同时修改 sourcemap 文件内容。
-    let derived = file.derived;
+    var derived = file.derived;
     if (!derived || !derived.length) {
       derived = file.extras && file.extras.derived;
     }
 
     if (derived && derived[0] && derived[0].rExt === '.map') {
       try {
-        const sourcemap = derived[0];
-        const json = JSON.parse(sourcemap.getContent());
+        var SourceMap = require('source-map');
+      
 
-        new SourceMap.SourceMapConsumer(json).then((smc => {
-          const sourceNode = new SourceMap.SourceNode();
+        var sourcemap = derived[0];
+        var json = JSON.parse(sourcemap.getContent());
+        var smc = new SourceMap.SourceMapConsumer(json);
 
-          sourceNode.add(prefix);
-          sourceNode.add(SourceMap.SourceNode.fromStringWithSourceMap(originContent, smc));
-          sourceNode.add(affix);
+        var sourceNode = new SourceMap.SourceNode();
 
-          const code_map = sourceNode.toStringWithSourceMap({
-            file: smc.file
-          });
+        sourceNode.add(prefix);
+        sourceNode.add(SourceMap.SourceNode.fromStringWithSourceMap(originContent, smc));
+        sourceNode.add(affix);
 
-          new SourceMap.SourceMapConsumer(code_map.map.toJSON()).then(smp => {
-            const generater = SourceMap.SourceMapGenerator.fromSourceMap(smp);
-            sourcemap.setContent(generater.toString());
-            file.setContent(content);
-          });
-        }));
+        var code_map = sourceNode.toStringWithSourceMap({
+          file: smc.file
+        });
+
+        var generater = SourceMap.SourceMapGenerator.fromSourceMap(new SourceMap.SourceMapConsumer(code_map.map.toJSON()));
+        sourcemap.setContent(generater.toString());
       } catch (e) {
         fis.log.warn('SourceMap Merge Error: %s\n%s', e.message, e.stack);
-        file.setContent(content);
       }
-    } else {
-      file.setContent(content);
     }
 
+    file.setContent(content);
   }
 }

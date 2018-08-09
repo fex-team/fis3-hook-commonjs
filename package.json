@@ -30,7 +30,7 @@
     "should": "^13.2.3"
   },
   "dependencies": {
-    "source-map": "^0.7.3",
+    "source-map": "^0.5.3",
     "escope": "^3.3.0",
     "esprima": "^2.7.1",
     "jstransform": "^11.0.3"
