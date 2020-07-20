@@ -71,5 +71,7 @@ entry.defaultOptions = {
   extList: ['.js', '.coffee', '.jsx', '.es6'],
 
   // 设置包裹时，内容缩进的空格数。
-  tab: 2
+  tab: 2,
+
+  sourceMap: true,
 };

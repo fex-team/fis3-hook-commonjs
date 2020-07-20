@@ -48,7 +48,7 @@ module.exports = function(file, opts) {
       derived = file.extras && file.extras.derived;
     }
 
-    if (derived && derived[0] && derived[0].rExt === '.map') {
+    if (opts.sourceMap && derived && derived[0] && derived[0].rExt === '.map') {
       try {
         var SourceMap = require('source-map');
       
